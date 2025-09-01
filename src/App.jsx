@@ -4,10 +4,14 @@ import { Mail, Instagram } from "lucide-react";
 
 /*
   FINAL PROFESSIONAL DESIGN:
-  - This design features a single, unified card for a minimalist and elegant look.
-  - The visual "symbol" is replaced with a subtle, professional background texture.
-  - Typography is the central focus of the design.
-  - All elements are perfectly centered.
+  - This version uses the specified brand color palette for a custom, high-end feel.
+  - Colors used:
+    - Background: bg-pink-50 (#FEF9FA)
+    - Headline: brand-dark-maroon (#7F002E)
+    - Primary Accent: brand-pink (#D97E8A)
+    - Body Text: brand-maroon (#76253B)
+    - Focus: brand-light-pink (#EC9FAB)
+    - Footer Text: brand-footer (#370808)
 */
 
 // A subtle background pattern component to add texture to the card.
@@ -73,7 +77,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-[#FEF9FA] min-h-screen w-full flex items-center justify-center p-4 font-grotesk">
+    <div className="bg-pink-50 min-h-screen w-full flex items-center justify-center p-4 font-grotesk">
       <motion.div
         className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white p-8 text-center shadow-2xl shadow-pink-200/50 sm:p-12"
         initial={{ opacity: 0, scale: 0.95 }}
@@ -98,7 +102,7 @@ export default function App() {
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="text-4xl font-light tracking-tight text-[#3d3d3d] font-josefin sm:text-5xl"
+            className="text-4xl font-light tracking-tight text-[#7F002E] font-josefin sm:text-5xl"
           >
             Your Ultimate Style Statement.
           </motion.h1>
@@ -108,7 +112,7 @@ export default function App() {
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mt-4 max-w-sm text-base text-gray-500"
+            className="mt-4 max-w-sm text-base text-[#76253B]"
           >
             Discover bespoke, reusable press-on nails crafted to empower your
             self-expression. The revolution in nail artistry is coming.
@@ -119,7 +123,7 @@ export default function App() {
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mt-2 mb-6 font-josefin text-md text-[#D97E8A]"
+            className="mt-2 mb-6 font-josefin text-md text-[#76253B]"
           >
             Launching Fall 2025
           </motion.div>
@@ -142,7 +146,7 @@ export default function App() {
                   <h3 className="text-lg font-semibold text-[#D97E8A] font-josefin">
                     Welcome to the inner circle.
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-[#76253B]">
                     Thank you! Keep an eye on your inbox for launch news and
                     exclusives.
                   </p>
@@ -163,7 +167,7 @@ export default function App() {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-12 w-full rounded-md border border-gray-200 bg-gray-50 pl-10 pr-4 transition-colors focus:border-pink-300 focus:outline-none focus:ring-1 focus:ring-pink-300"
+                      className="h-12 w-full rounded-md border border-gray-200 bg-gray-50 pl-10 pr-4 transition-colors focus:border-[#EC9FAB] focus:outline-none focus:ring-1 focus:ring-[#EC9FAB]"
                     />
                   </div>
                   <motion.button
@@ -193,7 +197,7 @@ export default function App() {
           >
             <a
               href="#"
-              className="flex items-center justify-center text-gray-400 transition-colors hover:text-[#D97E8A]"
+              className="flex items-center justify-center text-[#370808] transition-colors hover:text-[#D97E8A]"
             >
               <Instagram size={18} />
               <span className="ml-2 text-sm">Follow us on Instagram</span>
