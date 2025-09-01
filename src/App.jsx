@@ -1,175 +1,54 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { Mail, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, Instagram } from "lucide-react";
 
 /*
-  FINAL VERSION NOTES:
-  - Added a "Launching Soon" message.
-  - Adjusted headline size and spacing for a balanced layout.
+  FINAL PROFESSIONAL DESIGN:
+  - This design features a single, unified card for a minimalist and elegant look.
+  - The visual "symbol" is replaced with a subtle, professional background texture.
+  - Typography is the central focus of the design.
+  - All elements are perfectly centered.
 */
 
-// LAYER 1: Fluid Blob Background
-const FluidBlobBackground = () => {
-  const blobs = [
-    {
-      id: 1,
-      initial: { x: "10vw", y: "15vh", scale: 1.2, rotate: 0 },
-      animate: {
-        x: "80vw",
-        y: "70vh",
-        scale: [1.2, 1.4, 1.1],
-        rotate: [0, 80, 160],
-      },
-      transition: {
-        duration: 22,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-      },
-      style: {
-        background: "rgba(217, 126, 138, 0.2)",
-        width: "35vw",
-        height: "35vw",
-      },
-    },
-    {
-      id: 2,
-      initial: { x: "70vw", y: "60vh", scale: 1, rotate: 0 },
-      animate: {
-        x: "20vw",
-        y: "20vh",
-        scale: [1, 1.3, 0.9],
-        rotate: [0, -70, -140],
-      },
-      transition: {
-        duration: 28,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-        delay: 2,
-      },
-      style: {
-        background: "rgba(236, 159, 171, 0.22)",
-        width: "40vw",
-        height: "40vw",
-      },
-    },
-    {
-      id: 3,
-      initial: { x: "50vw", y: "90vh", scale: 0.9, rotate: 30 },
-      animate: {
-        x: "30vw",
-        y: "10vh",
-        scale: [0.9, 1.1, 0.8],
-        rotate: [30, 10, -50],
-      },
-      transition: {
-        duration: 25,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut",
-        delay: 1,
-      },
-      style: {
-        background: "rgba(217, 126, 138, 0.18)",
-        width: "30vw",
-        height: "30vw",
-      },
-    },
-  ];
-
-  return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-      {blobs.map((blob) => (
-        <motion.div
-          key={blob.id}
-          initial={blob.initial}
-          animate={blob.animate}
-          transition={blob.transition}
-          className="absolute rounded-full filter blur-3xl"
-          style={blob.style}
-        />
-      ))}
-    </div>
-  );
-};
-
-// LAYER 2: Interactive Shimmer Grid
-const ShimmeringGridBackground = ({ mouseX, mouseY }) => {
-  return (
-    <div className="pointer-events-none absolute inset-0 z-[1] grid h-full w-full grid-cols-[repeat(25,1fr)] grid-rows-[repeat(20,1fr)]">
-      {Array.from(Array(25 * 20)).map((_, i) => (
-        <Square key={i} mouseX={mouseX} mouseY={mouseY} />
-      ))}
-    </div>
-  );
-};
-
-const Square = ({ mouseX, mouseY }) => {
-  const ref = useRef(null);
-  const [center, setCenter] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect();
-      setCenter({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      });
-    }
-  }, []);
-
-  const distance = useTransform([mouseX, mouseY], ([newX, newY]) => {
-    if (center.x === 0) return 1000;
-    return Math.sqrt(
-      Math.pow(newX - center.x, 2) + Math.pow(newY - center.y, 2)
-    );
-  });
-
-  const opacity = useTransform(distance, [0, 100, 200], [1, 0.5, 0]);
-  const scale = useTransform(distance, [0, 80], [1.2, 0.7]);
-  const backgroundColor = useTransform(
-    distance,
-    [0, 100],
-    ["#D97E8A", "#EC9FAB"]
-  );
-
-  return (
-    <motion.div
-      ref={ref}
-      className="h-full w-full"
-      style={{ backgroundColor, opacity, scale }}
-    />
-  );
-};
+// A subtle background pattern component to add texture to the card.
+const SubtlePattern = () => (
+  <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern
+          id="pattern-circles"
+          x="0"
+          y="0"
+          width="40"
+          height="40"
+          patternUnits="userSpaceOnUse"
+          patternContentUnits="userSpaceOnUse"
+        >
+          <circle
+            id="pattern-circle"
+            cx="20"
+            cy="20"
+            r="1"
+            fill="rgba(217, 126, 138, 0.1)"
+          ></circle>
+        </pattern>
+      </defs>
+      <rect
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        fill="url(#pattern-circles)"
+      ></rect>
+    </svg>
+  </div>
+);
 
 // Main App Component
 export default function App() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
-
-  const mouseX = useSpring(0, { stiffness: 200, damping: 40 });
-  const mouseY = useSpring(0, { stiffness: 200, damping: 40 });
-
-  const handleMouseMove = ({ clientX, clientY }) => {
-    mouseX.set(clientX);
-    mouseY.set(clientY);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(window.innerWidth * -1);
-    mouseY.set(window.innerHeight * -1);
-  };
-
-  useEffect(() => {
-    handleMouseLeave();
-  }, []);
 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
@@ -184,70 +63,83 @@ export default function App() {
     setSubmitted(true);
   };
 
-  return (
-    <div
-      className="bg-[#FEF9FA] min-h-screen w-full flex flex-col items-center justify-center p-4 text-gray-800 overflow-hidden relative"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <FluidBlobBackground />
-      <ShimmeringGridBackground mouseX={mouseX} mouseY={mouseY} />
+  const contentAnimation = {
+    hidden: { opacity: 0, y: 10 },
+    visible: (delay = 0) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut", delay },
+    }),
+  };
 
-      <main className="z-10 flex flex-col items-center justify-center text-center max-w-2xl font-grotesk">
-        <div className="bg-[#fef9fa99] backdrop-blur-sm p-6 sm:p-8 rounded-2xl flex flex-col items-center">
+  return (
+    <div className="bg-[#FEF9FA] min-h-screen w-full flex items-center justify-center p-4 font-grotesk">
+      <motion.div
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white p-8 text-center shadow-2xl shadow-pink-200/50 sm:p-12"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
+      >
+        <SubtlePattern />
+
+        <div className="relative z-10 flex flex-col items-center">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            className="mb-4 text-2xl md:text-3xl font-thin tracking-[0.3em] text-[#D97E8A] font-josefin"
+            custom={0.2}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="mb-2 text-xl font-thin tracking-[0.3em] text-[#D97E8A] font-josefin"
           >
             K L A W S
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-light mb-4 tracking-tight text-[#3d3d3d] font-josefin"
+            custom={0.3}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="text-4xl font-light tracking-tight text-[#3d3d3d] font-josefin sm:text-5xl"
           >
             Your Ultimate Style Statement.
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            className="text-lg md:text-xl text-gray-500 max-w-lg mb-4"
+            custom={0.4}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="mt-4 max-w-sm text-base text-gray-500"
           >
             Discover bespoke, reusable press-on nails crafted to empower your
             self-expression. The revolution in nail artistry is coming.
           </motion.p>
 
-          {/* NEW "LAUNCHING SOON" MESSAGE */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.7 }}
-            className="font-josefin text-lg text-[#D97E8A] tracking-wider mb-8 font-light"
+            custom={0.5}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="mt-2 mb-6 font-josefin text-md text-[#D97E8A]"
           >
             Launching Fall 2025
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 0.8 }}
-            className="w-full max-w-md"
+            custom={0.6}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="w-full max-w-sm"
           >
             <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="thank-you"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center"
                 >
-                  <h3 className="text-xl font-semibold text-[#D97E8A] font-josefin">
+                  <h3 className="text-lg font-semibold text-[#D97E8A] font-josefin">
                     Welcome to the inner circle.
                   </h3>
                   <p className="text-gray-600">
@@ -259,10 +151,7 @@ export default function App() {
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex flex-col sm:flex-row items-center gap-2 w-full"
+                  className="flex w-full flex-col items-center gap-2 sm:flex-row"
                 >
                   <div className="relative w-full">
                     <Mail
@@ -274,37 +163,44 @@ export default function App() {
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full h-12 pl-10 pr-4 bg-white/80 border border-gray-200/80 rounded-md focus:ring-2 focus:ring-[#EC9FAB] focus:outline-none transition-all duration-300 placeholder-gray-400"
-                      aria-label="Email Address"
+                      className="h-12 w-full rounded-md border border-gray-200 bg-gray-50 pl-10 pr-4 transition-colors focus:border-pink-300 focus:outline-none focus:ring-1 focus:ring-pink-300"
                     />
                   </div>
                   <motion.button
                     type="submit"
-                    className="flex items-center justify-center w-full sm:w-auto h-12 px-6 bg-[#D97E8A] text-white font-semibold rounded-md shadow-lg shadow-[#D97E8A]/40 whitespace-nowrap"
-                    whileHover={{
-                      scale: 1.05,
-                      boxShadow: "0px 5px 20px rgba(217, 126, 138, 0.5)",
-                    }}
+                    className="flex h-12 w-full items-center justify-center whitespace-nowrap rounded-md bg-[#D97E8A] px-6 font-semibold text-white shadow-lg shadow-[#D97E8A]/40 sm:w-auto"
+                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <span>Notify Me</span>
-                    <ChevronRight className="ml-1" size={20} />
+                    Notify Me
                   </motion.button>
                 </motion.form>
               )}
             </AnimatePresence>
             {error && (
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-red-500 text-sm mt-2 w-full text-center"
-              >
+              <p className="mt-2 w-full text-center text-sm text-red-500">
                 {error}
-              </motion.p>
+              </p>
             )}
           </motion.div>
+
+          <motion.div
+            custom={0.7}
+            initial="hidden"
+            animate="visible"
+            variants={contentAnimation}
+            className="mt-8 w-full border-t border-gray-200 pt-6"
+          >
+            <a
+              href="#"
+              className="flex items-center justify-center text-gray-400 transition-colors hover:text-[#D97E8A]"
+            >
+              <Instagram size={18} />
+              <span className="ml-2 text-sm">Follow us on Instagram</span>
+            </a>
+          </motion.div>
         </div>
-      </main>
+      </motion.div>
     </div>
   );
 }
