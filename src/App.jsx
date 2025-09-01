@@ -5,13 +5,7 @@ import { Mail, Instagram } from "lucide-react";
 /*
   FINAL PROFESSIONAL DESIGN:
   - This version uses the specified brand color palette for a custom, high-end feel.
-  - Colors used:
-    - Background: bg-pink-50 (#FEF9FA)
-    - Headline: brand-dark-maroon (#7F002E)
-    - Primary Accent: brand-pink (#D97E8A)
-    - Body Text: brand-maroon (#76253B)
-    - Focus: brand-light-pink (#EC9FAB)
-    - Footer Text: brand-footer (#370808)
+  - "KLAWS" heading is now larger and more prominent.
 */
 
 // A subtle background pattern component to add texture to the card.
@@ -87,12 +81,13 @@ export default function App() {
         <SubtlePattern />
 
         <div className="relative z-10 flex flex-col items-center">
+          {/* UPDATED: Increased font size and weight for the brand name */}
           <motion.div
             custom={0.2}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mb-2 text-xl font-thin tracking-[0.3em] text-[#D97E8A] font-josefin"
+            className="mb-3 text-2xl sm:text-3xl font-light tracking-[0.3em] text-[#D97E8A] font-josefin"
           >
             K L A W S
           </motion.div>
@@ -196,7 +191,9 @@ export default function App() {
             className="mt-8 w-full border-t border-gray-200 pt-6"
           >
             <a
-              href="#"
+              href="https://www.instagram.com/klaws.co_/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center justify-center text-[#370808] transition-colors hover:text-[#D97E8A]"
             >
               <Instagram size={18} />
