@@ -5,7 +5,7 @@ import { Mail, Instagram } from "lucide-react";
 // A subtle background pattern component to add texture to the card.
 const SubtlePattern = () => (
   <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <svg width="100%" height="100%" xmlns="http://www.w.org/2000/svg">
       <defs>
         <pattern
           id="pattern-circles"
@@ -91,8 +91,9 @@ export default function App() {
 
   return (
     <div className="bg-pink-50 min-h-screen w-full flex items-center justify-center p-4 font-grotesk">
+      {/* UPDATED: Changed padding from p-6/sm:p-12 to specific px, pt, and pb to remove top whitespace */}
       <motion.div
-        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white p-6 text-center shadow-2xl shadow-pink-200/50 sm:p-12"
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white px-6 pt-6 pb-8 text-center shadow-2xl shadow-pink-200/50 sm:px-12 sm:pt-8 sm:pb-12"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
@@ -104,12 +105,12 @@ export default function App() {
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mb-4"
+            className="mt-0"
           >
             <img
               src="/preview.PNG"
               alt="Klaws Logo"
-              className="w-36 sm:w-48 mx-auto"
+              className="w-36 sm:w-48 mx-auto mt-0"
             />
           </motion.div>
           <motion.h1
@@ -121,22 +122,27 @@ export default function App() {
           >
             Your Ultimate Style Statement.
           </motion.h1>
+
           <motion.p
             custom={0.4}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mt-3 max-w-sm text-base text-[#76253B]"
+            className="mt-4 max-w-sm text-sm sm:text-base text-[#76253B] leading-relaxed"
           >
-            Discover bespoke, reusable press-on nails crafted to empower your
-            self-expression. The revolution in nail artistry is coming.
+            Hey you! 👀 Something extra chatpata is about to land… KLAWS is
+            almost here, and trust us, your nails will thank you. 💅 Think a
+            vibe so aesthetic your friends will be asking, “Where did you get
+            that?!” Stay tuned, Sign up and let your nails do the talking.
+            (Because missing out is not an option here 😋 )
           </motion.p>
+
           <motion.div
             custom={0.5}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mt-2 mb-6 font-josefin text-md text-[#76253B]"
+            className="mt-4 mb-6 font-josefin text-md text-[#76253B]"
           >
             Launching Fall 2025
           </motion.div>
