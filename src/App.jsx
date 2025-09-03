@@ -2,12 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Instagram } from "lucide-react";
 
-/*
-  FINAL PROFESSIONAL DESIGN:
-  - This version uses the specified brand color palette for a custom, high-end feel.
-  - "KLAWS" heading is now larger and more prominent.
-*/
-
 // A subtle background pattern component to add texture to the card.
 const SubtlePattern = () => (
   <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -46,7 +40,12 @@ const SubtlePattern = () => (
 export default function App() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  // --- IMPORTANT: PASTE YOUR GOOGLE APPS SCRIPT URL HERE ---
+  const SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbz6uiBqmMMZZMWuYo_v3XbLJMauyT0wt4lG0VXPeJl6QWXxmeBTRNg6i5sbuikEBr4P/exec";
 
   const validateEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).toLowerCase());
@@ -57,8 +56,28 @@ export default function App() {
       setError("Please enter a valid email address.");
       return;
     }
+
+    setIsSubmitting(true);
     setError("");
-    setSubmitted(true);
+
+    const formData = new FormData();
+    formData.append("email", email);
+
+    fetch(SCRIPT_URL, { method: "POST", body: formData })
+      .then((response) => {
+        if (response.ok) {
+          setSubmitted(true);
+        } else {
+          throw new Error("Network response was not ok.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error!", error.message);
+        setError("Something went wrong. Please try again.");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const contentAnimation = {
@@ -73,46 +92,45 @@ export default function App() {
   return (
     <div className="bg-pink-50 min-h-screen w-full flex items-center justify-center p-4 font-grotesk">
       <motion.div
-        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white p-8 text-center shadow-2xl shadow-pink-200/50 sm:p-12"
+        className="relative w-full max-w-lg overflow-hidden rounded-2xl bg-white p-6 text-center shadow-2xl shadow-pink-200/50 sm:p-12"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: [0.25, 1, 0.5, 1] }}
       >
         <SubtlePattern />
-
         <div className="relative z-10 flex flex-col items-center">
-          {/* UPDATED: Increased font size and weight for the brand name */}
           <motion.div
             custom={0.2}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mb-3 text-2xl sm:text-3xl font-light tracking-[0.3em] text-[#D97E8A] font-josefin"
+            className="mb-4"
           >
-            K L A W S
+            <img
+              src="/preview.PNG"
+              alt="Klaws Logo"
+              className="w-36 sm:w-48 mx-auto"
+            />
           </motion.div>
-
           <motion.h1
             custom={0.3}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="text-4xl font-light tracking-tight text-[#7F002E] font-josefin sm:text-5xl"
+            className="text-3xl font-light tracking-tight text-[#7F002E] font-josefin sm:text-5xl"
           >
             Your Ultimate Style Statement.
           </motion.h1>
-
           <motion.p
             custom={0.4}
             initial="hidden"
             animate="visible"
             variants={contentAnimation}
-            className="mt-4 max-w-sm text-base text-[#76253B]"
+            className="mt-3 max-w-sm text-base text-[#76253B]"
           >
             Discover bespoke, reusable press-on nails crafted to empower your
             self-expression. The revolution in nail artistry is coming.
           </motion.p>
-
           <motion.div
             custom={0.5}
             initial="hidden"
@@ -122,7 +140,6 @@ export default function App() {
           >
             Launching Fall 2025
           </motion.div>
-
           <motion.div
             custom={0.6}
             initial="hidden"
@@ -163,6 +180,7 @@ export default function App() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="h-12 w-full rounded-md border border-gray-200 bg-gray-50 pl-10 pr-4 transition-colors focus:border-[#EC9FAB] focus:outline-none focus:ring-1 focus:ring-[#EC9FAB]"
+                      disabled={isSubmitting}
                     />
                   </div>
                   <motion.button
@@ -170,8 +188,9 @@ export default function App() {
                     className="flex h-12 w-full items-center justify-center whitespace-nowrap rounded-md bg-[#D97E8A] px-6 font-semibold text-white shadow-lg shadow-[#D97E8A]/40 sm:w-auto"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
+                    disabled={isSubmitting}
                   >
-                    Notify Me
+                    {isSubmitting ? "Submitting..." : "Notify Me"}
                   </motion.button>
                 </motion.form>
               )}
@@ -182,7 +201,6 @@ export default function App() {
               </p>
             )}
           </motion.div>
-
           <motion.div
             custom={0.7}
             initial="hidden"
